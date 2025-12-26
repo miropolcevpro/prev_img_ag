@@ -743,49 +743,55 @@ function pointInUI(target){
       xrSession = await navigator.xr.requestSession("immersive-ar", sessionInitLite);
     }
 
-    // reference space + three.js session setup
-    // Some devices don't support 'local-floor' for immersive-ar. Three.js also requests a reference space
-    // during renderer.xr.setSession(), so we must set a supported type BEFORE calling setSession.
-    const refTypeCandidates = ["local-floor", "local", "viewer"];
+    // --- Reference space selection
+    // Some devices don't support 'local-floor' for immersive-ar.
+    // three.js ALSO calls session.requestReferenceSpace() inside renderer.xr.setSession(),
+    // so we must pick a supported type first, then set that type on WebXRManager.
+    const refTypeCandidates = ["local-floor", "local", "viewer"]; // in preferred order
     let refType = null;
     refSpace = null;
 
     let sessionSet = false;
     for(const t of refTypeCandidates){
       try{
-        if(renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
-          renderer.xr.setReferenceSpaceType(t);
-        }
+        // Probe support at the WebXR layer BEFORE involving three.js.
+        const space = await xrSession.requestReferenceSpace(t);
+
+        // Tell three.js which reference space type it should request internally.
+        if(renderer?.xr?.setReferenceSpaceType) renderer.xr.setReferenceSpaceType(t);
+
+        // Now it is safe to hand the session to three.js.
         await renderer.xr.setSession(xrSession);
+
         refType = t;
+        refSpace = space;
         sessionSet = true;
         break;
       }catch(e){
         if(e && e.name === "NotSupportedError"){
-          console.warn("renderer.xr.setSession failed for referenceSpaceType =", t, e);
+          // skip unsupported types quietly
           continue;
         }
         throw e;
       }
     }
-    if(!sessionSet){
-      throw new Error("WebXR: this device doesn't support required reference spaces (local-floor/local/viewer).");
+    if(!sessionSet || !refSpace){
+      throw new Error("WebXR: это устройство не поддерживает reference space local-floor/local/viewer.");
     }
 
-    // Request the actual reference space instance. If it fails for the chosen type, fall back to 'viewer'.
+    // DOM/canvas transparency & UI behavior in AR
+    document.documentElement.classList.add("xr-presenting");
+    document.body.classList.add("xr-presenting");
+    // In AR we prefer an unobstructed camera view; keep the panel collapsed by default.
+    setPanelCollapsed(true);
+
+    // hit test (best-effort)
     try{
-      refSpace = await xrSession.requestReferenceSpace(refType);
-    }catch(e){
-      console.warn("xrSession.requestReferenceSpace failed for", refType, "retrying 'viewer'", e);
-      refType = "viewer";
-      if(renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
-        renderer.xr.setReferenceSpaceType("viewer");
-      }
-      refSpace = await xrSession.requestReferenceSpace("viewer");
+      viewerSpace = await xrSession.requestReferenceSpace("viewer");
+    }catch(_){
+      // Some implementations may not expose 'viewer'; fall back to the chosen refSpace.
+      viewerSpace = refSpace;
     }
-
-    // hit test
-    viewerSpace = await xrSession.requestReferenceSpace("viewer");
     hitTestSource = await xrSession.requestHitTestSource({ space: viewerSpace });
 
     // optional depth detection (no rendering changes)
@@ -809,6 +815,7 @@ function pointInUI(target){
 
     enterArBtn.classList.add("hidden");
     exitArBtn.classList.remove("hidden");
+    exitArBtn.disabled = false;
 
     xrSession.addEventListener("end", onSessionEnd);
 
@@ -843,8 +850,11 @@ function pointInUI(target){
     renderer.setClearColor(PREVIEW_CLEAR.color, PREVIEW_CLEAR.alpha);
     previewGround.visible = true;
     reticle.visible = false;
+    document.documentElement.classList.remove("xr-presenting");
+    document.body.classList.remove("xr-presenting");
     enterArBtn.classList.remove("hidden");
     exitArBtn.classList.add("hidden");
+    exitArBtn.disabled = true;
 
     calibrated = false;
     floorY = null;

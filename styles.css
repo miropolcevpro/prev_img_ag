@@ -25,7 +25,12 @@ html,body{ margin:0; height:100%; background:var(--bg); color:var(--fg); font:14
 a{ color:#93c5fd; text-decoration:none; }
 a:hover{ text-decoration:underline; }
 
-#c{ position:fixed; inset:0; width:100%; height:100%; display:block; background:#000; }
+#c{ position:fixed; inset:0; width:100%; height:100%; display:block; background:transparent; }
+
+/* While an immersive-ar session is presenting, the camera feed should be visible behind WebGL.
+   Make page backgrounds fully transparent so DOM overlays don't mask the camera. */
+html.xr-presenting, body.xr-presenting{ background:transparent !important; }
+body.xr-presenting #c{ background:transparent !important; }
 
 .topbar{
   position:fixed;
