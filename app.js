@@ -78,7 +78,7 @@ function pointInUI(target){
   const splashWatchdog = setTimeout(()=>{
     hideSplash();
     setStatus("Нажмите «Включить AR».");
-  }, 4000);
+  }, 3000);
   window.addEventListener("pointerdown", ()=>{
     hideSplash();
     setStatus("Нажмите «Включить AR».");
@@ -736,10 +736,14 @@ function pointInUI(target){
       xrSession = await navigator.xr.requestSession("immersive-ar", sessionInitLite);
     }
 
-    // reference space
-    refSpace = await xrSession.requestReferenceSpace("local-floor").catch(async ()=>{
-      return await xrSession.requestReferenceSpace("local");
-    });
+    // reference space (some devices don't support 'local-floor' for immersive-ar)
+    let refType = "local-floor";
+    try{
+      refSpace = await xrSession.requestReferenceSpace(refType);
+    }catch(_e){
+      refType = "local";
+      refSpace = await xrSession.requestReferenceSpace(refType);
+    }
 
     // hit test
     viewerSpace = await xrSession.requestReferenceSpace("viewer");
@@ -758,8 +762,27 @@ function pointInUI(target){
       }
     }catch(_){ }
 
-    await renderer.xr.setReferenceSpace(refSpace);
-    await renderer.xr.setSession(xrSession);
+    // three.js defaults to 'local-floor' which may throw NotSupportedError on some devices.
+    // Use the same reference space type we successfully acquired above.
+    if(renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
+      renderer.xr.setReferenceSpaceType(refType);
+    }
+    try{
+      await renderer.xr.setSession(xrSession);
+    }catch(e){
+      // last-resort fallback
+      if(e && e.name === "NotSupportedError" && renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
+        console.warn("ReferenceSpaceType not supported, falling back to 'local'", e);
+        renderer.xr.setReferenceSpaceType("local");
+        await renderer.xr.setSession(xrSession);
+      }else{
+        throw e;
+      }
+    }
+    // ensure renderer uses the same reference space instance for hit tests/poses
+    if(renderer && renderer.xr && renderer.xr.setReferenceSpace){
+      await renderer.xr.setReferenceSpace(refSpace);
+    }
 
     enterArBtn.classList.add("hidden");
     exitArBtn.classList.remove("hidden");
