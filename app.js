@@ -711,6 +711,13 @@ function pointInUI(target){
 
     setStatus("Запуск AR…");
 
+    // Stop preview rendering *before* switching renderer to an XR session.
+    // Otherwise the existing preview loop may render once to the XRWebGLLayer
+    // outside of XRSession.requestAnimationFrame callback -> WebGL INVALID_FRAMEBUFFER_OPERATION.
+    renderer.setAnimationLoop(null);
+
+    try{
+
     // transparent clear for camera
     renderer.setClearColor(0x000000, 0);
     previewGround.visible = false;
@@ -813,6 +820,13 @@ function pointInUI(target){
     setStatus("Наведите на пол и нажмите «Калибр. пол». ");
 
     renderer.setAnimationLoop(render);
+      }
+    catch(e){
+      // Best-effort cleanup: end session (if created) and restore preview loop/UI.
+      try{ await xrSession?.end(); }catch(_){ /* ignore */ }
+      onSessionEnd();
+      throw e;
+    }
   }
 
   function onSessionEnd(){
@@ -825,7 +839,7 @@ function pointInUI(target){
     depthSupported = false;
 
     // restore preview
-    renderer.setAnimationLoop(null);
+    startPreviewLoop();
     renderer.setClearColor(PREVIEW_CLEAR.color, PREVIEW_CLEAR.alpha);
     previewGround.visible = true;
     reticle.visible = false;
@@ -954,6 +968,16 @@ function pointInUI(target){
     renderer.render(scene, camera);
   }
 
+
+  // Preview loop (non-AR). We keep it as a named loop so we can reliably stop it
+  // before XR session setup (prevents rendering to XRWebGLLayer outside XR frame callback).
+  function previewLoop(){
+    renderer.render(scene, camera);
+  }
+  function startPreviewLoop(){
+    renderer.setAnimationLoop(previewLoop);
+  }
+
   // --- Input
   // Add point by tapping on the screen (outside UI)
   window.addEventListener("pointerup", (e)=>{
@@ -983,6 +1007,9 @@ function pointInUI(target){
 
   // Resize
   addEventListener("resize", ()=>{
+    // While XR is presenting, three.js manages the XR framebuffer size.
+    // Calling setSize() during presentation triggers warnings and can break rendering.
+    if(renderer.xr && renderer.xr.isPresenting) return;
     renderer.setSize(innerWidth, innerHeight, false);
     camera.aspect = innerWidth/innerHeight;
     camera.updateProjectionMatrix();
@@ -1010,9 +1037,9 @@ const __hideSplashOnce = ()=>{
   hideSplash();
   setStatus("Нажмите «Включить AR».");
 };
-setTimeout(__hideSplashOnce, 2500);
+setTimeout(__hideSplashOnce, 3000);
 window.addEventListener("pointerdown", __hideSplashOnce, { once:true });
 // First frame (preview)
-  renderer.setAnimationLoop(()=>renderer.render(scene,camera));
+  startPreviewLoop();
 
 })();
