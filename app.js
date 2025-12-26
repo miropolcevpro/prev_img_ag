@@ -11,9 +11,18 @@ const $ = (id) => document.getElementById(id);
 const statusEl = $("status");
 const dbgEl = $("dbg");
 
+function forceHideSplash(){
+  const el = $("splash");
+  if(!el) return;
+  el.hidden = true;
+  el.style.display = "none";
+  el.style.pointerEvents = "none";
+}
+
 function setStatus(msg){ if(statusEl) statusEl.textContent = msg; }
 function showDebug(err){
   console.error(err);
+  forceHideSplash();
   const msg = (err && (err.stack || err.message)) ? (err.stack || err.message) : String(err);
   if(dbgEl){ dbgEl.hidden = false; dbgEl.textContent = `Ошибка\n\n${msg}`; }
 }
@@ -57,12 +66,23 @@ function pointInUI(target){
   const splashSub = $("splashSub");
   function setSplash(text, sub){ if(splashText) splashText.textContent=text||""; if(splashSub) splashSub.textContent=sub||""; }
   function hideSplash(){
-  if(!splashEl) return;
-  splashEl.hidden = true;
-  // Extra safety: make sure it cannot block clicks even if some CSS overrides [hidden]
-  splashEl.style.display = "none";
-  splashEl.style.pointerEvents = "none";
-}
+    if(!splashEl) return;
+    splashEl.hidden = true;
+    // Extra safety: make sure it cannot block clicks even if some CSS overrides [hidden]
+    splashEl.style.display = "none";
+    splashEl.style.pointerEvents = "none";
+  }
+
+  // Watchdog: even if some async step fails (or the tab was paused),
+  // do not keep the splash forever. UI (and debug text) must remain accessible.
+  const splashWatchdog = setTimeout(()=>{
+    hideSplash();
+    setStatus("Нажмите «Включить AR».");
+  }, 4000);
+  window.addEventListener("pointerdown", ()=>{
+    hideSplash();
+    setStatus("Нажмите «Включить AR».");
+  }, { once:true });
 
   setSplash("Загрузка…", "Инициализация WebAR");
 
@@ -947,8 +967,9 @@ function pointInUI(target){
 
 // Hide splash after 2.5s, but also hide on first user tap/click (на случай, если таймеры/вкладка «подвисли»)
 const __hideSplashOnce = ()=>{
+  clearTimeout(splashWatchdog);
   hideSplash();
-  setStatus("Нажмите «Включить AR». ");
+  setStatus("Нажмите «Включить AR».");
 };
 setTimeout(__hideSplashOnce, 2500);
 window.addEventListener("pointerdown", __hideSplashOnce, { once:true });
