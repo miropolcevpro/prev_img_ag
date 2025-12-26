@@ -736,13 +736,45 @@ function pointInUI(target){
       xrSession = await navigator.xr.requestSession("immersive-ar", sessionInitLite);
     }
 
-    // reference space (some devices don't support 'local-floor' for immersive-ar)
-    let refType = "local-floor";
+    // reference space + three.js session setup
+    // Some devices don't support 'local-floor' for immersive-ar. Three.js also requests a reference space
+    // during renderer.xr.setSession(), so we must set a supported type BEFORE calling setSession.
+    const refTypeCandidates = ["local-floor", "local", "viewer"];
+    let refType = null;
+    refSpace = null;
+
+    let sessionSet = false;
+    for(const t of refTypeCandidates){
+      try{
+        if(renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
+          renderer.xr.setReferenceSpaceType(t);
+        }
+        await renderer.xr.setSession(xrSession);
+        refType = t;
+        sessionSet = true;
+        break;
+      }catch(e){
+        if(e && e.name === "NotSupportedError"){
+          console.warn("renderer.xr.setSession failed for referenceSpaceType =", t, e);
+          continue;
+        }
+        throw e;
+      }
+    }
+    if(!sessionSet){
+      throw new Error("WebXR: this device doesn't support required reference spaces (local-floor/local/viewer).");
+    }
+
+    // Request the actual reference space instance. If it fails for the chosen type, fall back to 'viewer'.
     try{
       refSpace = await xrSession.requestReferenceSpace(refType);
-    }catch(_e){
-      refType = "local";
-      refSpace = await xrSession.requestReferenceSpace(refType);
+    }catch(e){
+      console.warn("xrSession.requestReferenceSpace failed for", refType, "retrying 'viewer'", e);
+      refType = "viewer";
+      if(renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
+        renderer.xr.setReferenceSpaceType("viewer");
+      }
+      refSpace = await xrSession.requestReferenceSpace("viewer");
     }
 
     // hit test
@@ -762,24 +794,8 @@ function pointInUI(target){
       }
     }catch(_){ }
 
-    // three.js defaults to 'local-floor' which may throw NotSupportedError on some devices.
-    // Use the same reference space type we successfully acquired above.
-    if(renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
-      renderer.xr.setReferenceSpaceType(refType);
-    }
-    try{
-      await renderer.xr.setSession(xrSession);
-    }catch(e){
-      // last-resort fallback
-      if(e && e.name === "NotSupportedError" && renderer && renderer.xr && renderer.xr.setReferenceSpaceType){
-        console.warn("ReferenceSpaceType not supported, falling back to 'local'", e);
-        renderer.xr.setReferenceSpaceType("local");
-        await renderer.xr.setSession(xrSession);
-      }else{
-        throw e;
-      }
-    }
     // ensure renderer uses the same reference space instance for hit tests/poses
+
     if(renderer && renderer.xr && renderer.xr.setReferenceSpace){
       await renderer.xr.setReferenceSpace(refSpace);
     }

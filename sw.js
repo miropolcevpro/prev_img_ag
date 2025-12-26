@@ -1,6 +1,6 @@
 // Bump cache name on each release so GitHub Pages updates don't get stuck
 // behind an old Service Worker cache.
-const CACHE = 'paver-webar-v6.1.4';
+const CACHE = 'paver-webar-v6.1.5';
 
 const ASSETS = [
   './',
