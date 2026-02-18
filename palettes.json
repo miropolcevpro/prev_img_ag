@@ -2,85 +2,85 @@
   {
     "tech": "stonemix",
     "id": "v-m",
-    "name": "╨Ъ╨╛╨║╤В╨╡╨▒╨╡╨╗╤М",
+    "name": "Коктебель",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/v-m.webp"
   },
   {
     "tech": "stonemix",
     "id": "a-f",
-    "name": "╨Ъ╨░╤А╨░-╨Ф╨░╨│",
+    "name": "Кара-Даг",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/a-f.webp"
   },
   {
     "tech": "stonemix",
     "id": "v",
-    "name": "╨Ъ╨░╨╖╨░╨╜╤В╨╕╨┐",
+    "name": "Казантип",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/v.webp"
   },
   {
     "tech": "stonemix",
     "id": "v_2",
-    "name": "╨Ъ╨░╨╗╨░╨╝╨╕╤В",
+    "name": "Каламит",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/v_2.webp"
   },
   {
     "tech": "stonemix",
     "id": "v_3",
-    "name": "╨Ъ╨░╨╗╨░╨╝╨╕╤В",
+    "name": "Каламит",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/v_3.webp"
   },
   {
     "tech": "stonemix",
     "id": "y-b",
-    "name": "╨Ы╨░╤Б╨┐╨╕",
+    "name": "Ласпи",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/y-b.webp"
   },
   {
     "tech": "stonemix",
     "id": "e-l-zh-b-v",
-    "name": "╨Э╨╛╨▓╤Л╨╕╠Ж ╤Б╨▓╨╡╤В",
+    "name": "Новый свет",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/e-l-zh-b-v.webp"
   },
   {
     "tech": "stonemix",
     "id": "e-m",
-    "name": "╨Э╨╡╨░╨┐╨╛╨╗╤М",
+    "name": "Неаполь",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/e-m.webp"
   },
   {
     "tech": "stonemix",
     "id": "b-v-a-l-zh-a-l-v-l-zh",
-    "name": "╨б╤В╨░╤А╤Л╨╕╠Ж ╨Ъ╤А╤Л╨╝ ╤В╨╡╨╝╨╜╤Л╨╕╠Ж",
+    "name": "Старый Крым темный",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/b-v-a-l-zh-a-l-v-l-zh.webp"
   },
   {
     "tech": "stonemix",
     "id": "b-v-a-l-zh-a-l-z-a-l-zh",
-    "name": "╨б╤В╨░╤А╤Л╨╕╠Ж ╨Ъ╤А╤Л╨╝ ╤З╨╡╤А╨╜╤Л╨╕╠Ж",
+    "name": "Старый Крым черный",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/b-v-a-l-zh-a-l-z-a-l-zh.webp"
   },
   {
     "tech": "stonemix",
     "id": "b-v-a-l-zh-a-l-z-a-l-zh_2",
-    "name": "╨б╤В╨░╤А╤Л╨╕╠Ж ╨Ъ╤А╤Л╨╝ ╤З╨╡╤А╨╜╨╛-╨▒╨╡╨╗╤Л╨╕╠Ж",
+    "name": "Старый Крым черно-белый",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/b-v-a-l-zh-a-l-z-a-l-zh_2.webp"
   },
   {
     "tech": "stonemix",
     "id": "b-v-a-l-zh-a-l-a-d-v",
-    "name": "╨б╤В╨░╤А╤Л╨╕╠Ж ╨Ъ╤А╤Л╨╝ ╨│╤А╨░╤Д╨╕╤В",
+    "name": "Старый Крым графит",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/b-v-a-l-zh-a-l-a-d-v.webp"
   },
   {
     "tech": "stonemix",
     "id": "b-v-a-l-zh-a-l-l-zh",
-    "name": "╨б╤В╨░╤А╤Л╨╕╠Ж ╨Ъ╤А╤Л╨╝ ╨▒╨╡╨╗╤Л╨╕╠Ж",
+    "name": "Старый Крым белый",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/b-v-a-l-zh-a-l-l-zh.webp"
   },
   {
     "tech": "stonemix",
     "id": "v-a-a-v",
-    "name": "╨в╨╡╤А╤А╨░╨║╨╛╤В",
+    "name": "Терракот",
     "file": "technologies/stonemix/colors/technologies/stonemix/colors/v-a-a-v.webp"
   },
   {
