@@ -81,12 +81,12 @@
           {
             "mm": 80,
             "prices": {
-              "grey": 1454,
-              "mono_color1": "-",
-              "mono_color2": "-",
-              "colormix_2": "-",
-              "colormix_3": "-",
-              "colormix_fakt": "-",
+              "grey": 1315.6098,
+              "mono_color1": 1554.5343,
+              "mono_color2": "по запросу",
+              "colormix_2": "по запросу",
+              "colormix_3": "по запросу",
+              "colormix_fakt": "по запросу",
               "stonemix": "-"
             },
             "packaging": {
@@ -472,7 +472,9 @@
       "желтый-яркий"
     ],
     "grey_name": [
-      "серый"
+      "серый",
+      "Серые оттенки",
+      "Серые_оттенки"
     ]
   }
 }
