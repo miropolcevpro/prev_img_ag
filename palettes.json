@@ -87,67 +87,89 @@
     "tech": "colormix",
     "id": "ai_petri",
     "name": "Ай-Петри",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/ai_petri.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/ai_petri.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "colormix",
     "id": "ayu_dag",
     "name": "Аю-Даг",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/ayu_dag.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/ayu_dag.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "colormix",
     "id": "gurzuf",
     "name": "Гурзуф",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/gurzuf.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/gurzuf.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "colormix",
     "id": "zolotye_vorota",
     "name": "Золотые ворота",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/zolotye_vorota.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/zolotye_vorota.webp",
+    "mix_colors": 3,
+    "mix_label": "3 цвета"
   },
   {
     "tech": "colormix",
     "id": "kara_dag",
     "name": "Кара-Даг",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/kara_dag.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/kara_dag.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "colormix",
     "id": "koktebel",
     "name": "Коктебель",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/koktebel.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/koktebel.webp",
+    "mix_colors": 3,
+    "mix_label": "3 цвета"
   },
   {
     "tech": "colormix",
     "id": "neapol",
     "name": "Неаполь",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/neapol.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/neapol.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "colormix",
     "id": "novyi_svet",
     "name": "Новый свет",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/novyi_svet.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/novyi_svet.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "colormix",
     "id": "solnechnaya_dolina",
     "name": "Солнечная долина",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/solnechnaya_dolina.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/solnechnaya_dolina.webp",
+    "mix_colors": 3,
+    "mix_label": "3 цвета"
   },
   {
     "tech": "colormix",
     "id": "foros",
     "name": "Форос",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/foros.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/foros.webp",
+    "mix_colors": 3,
+    "mix_label": "3 цвета"
   },
   {
     "tech": "colormix",
     "id": "hersones",
     "name": "Херсонес",
-    "file": "technologies/colormix/colors/technologies/colormix/colors/hersones.webp"
+    "file": "technologies/colormix/colors/technologies/colormix/colors/hersones.webp",
+    "mix_colors": 2,
+    "mix_label": "2 цвета"
   },
   {
     "tech": "mono",
