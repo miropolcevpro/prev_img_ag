@@ -70,5 +70,17 @@
     "name": "Старый Город",
     "preview": "forms/staryy_gorod/preview.webp",
     "image": "forms/staryy_gorod/image.webp"
+  },
+  {
+    "id": "bordyur_sadovyy",
+    "name": "Бордюр садовый",
+    "preview": "forms/bordyur_sadovyy/preview.webp",
+    "image": "forms/bordyur_sadovyy/image.webp"
+  },
+  {
+    "id": "bordyur_dorozhnyy",
+    "name": "Бордюр дорожный",
+    "preview": "forms/bordyur_dorozhnyy/preview.webp",
+    "image": "forms/bordyur_dorozhnyy/image.webp"
   }
 ]
